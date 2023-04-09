@@ -62,9 +62,21 @@ pause
 
 goto menu
 
+:WifiPasswords
+
+cls 
+
+netsh wlan show profile key=clear
+
+pause
+
+goto menu
+
 :test
 
-for %%d in (Pictures,Documents,Desktop) do echo %%d
+FOR /F "tokens=*" %%g IN ('netsh wlan show profile') do (SET VAR=%%g)
+
+for %%a in (%VAR%) do echo %%a
 
 pause
 
@@ -84,6 +96,7 @@ echo 1. sfc + dism
 echo 2. user folder
 echo 3. robocopy user folder
 echo 4. diskpart
+echo 5. Export Wifi Passwords
 echo.
 echo type 'exit' to exit
 
@@ -93,6 +106,7 @@ if /I "%input%"=="1" goto dism
 if /I "%input%"=="2" goto userFolder
 if /I "%input%"=="3" goto robocopy
 if /I "%input%"=="4" diskpart
+if /I "%input%"=="5" goto WifiPasswords
 if /I "%input%"=="test" goto test
 if /I "%input%"=="exit" exit
 
